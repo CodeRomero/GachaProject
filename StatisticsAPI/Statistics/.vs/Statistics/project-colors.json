@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "c9e84d9d-6642-4109-8910-e0bf176bcccd": {
+      "ProjectGuid": "c9e84d9d-6642-4109-8910-e0bf176bcccd",
+      "DisplayName": "Statistics",
+      "ColorIndex": 0
+    },
+    "418781d5-6aa4-4456-80ad-c07aa7a2d0d1": {
+      "ProjectGuid": "418781d5-6aa4-4456-80ad-c07aa7a2d0d1",
+      "DisplayName": "StatisticsBusinessLayerMethods",
+      "ColorIndex": 1
+    },
+    "064f20b5-3256-4b5e-9c81-85c4c33b743c": {
+      "ProjectGuid": "064f20b5-3256-4b5e-9c81-85c4c33b743c",
+      "DisplayName": "StatisticsRepository",
+      "ColorIndex": 2
+    },
+    "e183572a-a54c-4328-9289-9e34cdd85aaf": {
+      "ProjectGuid": "e183572a-a54c-4328-9289-9e34cdd85aaf",
+      "DisplayName": "StatisticsTests",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}

@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "219dc492-f189-4a07-94b5-6defc9a8f1bb": {
+      "ProjectGuid": "219dc492-f189-4a07-94b5-6defc9a8f1bb",
+      "DisplayName": "GachaDatabase",
+      "ColorIndex": 0
+    },
+    "49e58784-c39f-4213-bb35-3b37e0c4f50a": {
+      "ProjectGuid": "49e58784-c39f-4213-bb35-3b37e0c4f50a",
+      "DisplayName": "GachaTests",
+      "ColorIndex": 1
+    },
+    "6c2c3602-af2c-4be9-a067-e90ae851bb18": {
+      "ProjectGuid": "6c2c3602-af2c-4be9-a067-e90ae851bb18",
+      "DisplayName": "GachaMainBusinessMethods",
+      "ColorIndex": 2
+    },
+    "bb59bbb7-f338-4483-ab17-4c2203bbebea": {
+      "ProjectGuid": "bb59bbb7-f338-4483-ab17-4c2203bbebea",
+      "DisplayName": "GachaAPI",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}

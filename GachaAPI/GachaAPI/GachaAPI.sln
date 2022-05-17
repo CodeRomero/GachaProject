@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32002.185
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GachaAPI", "GachaAPI\GachaAPI.csproj", "{BB59BBB7-F338-4483-AB17-4C2203BBEBEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GachaMainBusinessMethods", "GachaMainBusinessMethods\GachaMainBusinessMethods.csproj", "{6C2C3602-AF2C-4BE9-A067-E90AE851BB18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GachaTests", "GachaTests\GachaTests.csproj", "{49E58784-C39F-4213-BB35-3B37E0C4F50A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GachaDatabase", "GachaDatabase\GachaDatabase.csproj", "{219DC492-F189-4A07-94B5-6DEFC9A8F1BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB59BBB7-F338-4483-AB17-4C2203BBEBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB59BBB7-F338-4483-AB17-4C2203BBEBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB59BBB7-F338-4483-AB17-4C2203BBEBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB59BBB7-F338-4483-AB17-4C2203BBEBEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C2C3602-AF2C-4BE9-A067-E90AE851BB18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C2C3602-AF2C-4BE9-A067-E90AE851BB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C2C3602-AF2C-4BE9-A067-E90AE851BB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C2C3602-AF2C-4BE9-A067-E90AE851BB18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49E58784-C39F-4213-BB35-3B37E0C4F50A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49E58784-C39F-4213-BB35-3B37E0C4F50A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49E58784-C39F-4213-BB35-3B37E0C4F50A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49E58784-C39F-4213-BB35-3B37E0C4F50A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{219DC492-F189-4A07-94B5-6DEFC9A8F1BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{219DC492-F189-4A07-94B5-6DEFC9A8F1BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{219DC492-F189-4A07-94B5-6DEFC9A8F1BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{219DC492-F189-4A07-94B5-6DEFC9A8F1BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E8C2EF7-D8A6-463D-992C-A7F6CE1EECD8}
+	EndGlobalSection
+EndGlobal

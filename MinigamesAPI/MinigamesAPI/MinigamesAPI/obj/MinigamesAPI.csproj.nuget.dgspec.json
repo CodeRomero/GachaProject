@@ -1,0 +1,221 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI.csproj",
+        "projectName": "MinigamesAPI",
+        "projectPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI.csproj",
+        "packagesPath": "C:\\Users\\Christian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Christian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesBusinessLayerMethods\\MinigamesBusinessLayerMethods.csproj": {
+                "projectPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesBusinessLayerMethods\\MinigamesBusinessLayerMethods.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.14.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.6.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[5.0.17, 5.0.17]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.105\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesBusinessLayerMethods\\MinigamesBusinessLayerMethods.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesBusinessLayerMethods\\MinigamesBusinessLayerMethods.csproj",
+        "projectName": "MinigamesBusinessLayerMethods",
+        "projectPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesBusinessLayerMethods\\MinigamesBusinessLayerMethods.csproj",
+        "packagesPath": "C:\\Users\\Christian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesBusinessLayerMethods\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Christian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesDatabase\\MinigamesDatabase.csproj": {
+                "projectPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesDatabase\\MinigamesDatabase.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[107.3.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.105\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesDatabase\\MinigamesDatabase.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesDatabase\\MinigamesDatabase.csproj",
+        "projectName": "MinigamesDatabase",
+        "projectPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesDatabase\\MinigamesDatabase.csproj",
+        "packagesPath": "C:\\Users\\Christian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Christian\\Desktop\\Code\\PokeLootV2\\GachaProject\\MinigamesAPI\\MinigamesAPI\\MinigamesDatabase\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Christian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.105\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
