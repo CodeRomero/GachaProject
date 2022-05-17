@@ -1,0 +1,103 @@
+.flex-cointainer{
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    width: 100px;
+    justify-content: space-evenly;
+}
+/* .flex-child{
+    ;
+} */
+/* dropdownlist */
+ select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    background: rgba(54,69,79, .75);
+    background-image: none;
+    border:1px solid black;
+}
+select {
+    /* width: 50%; */
+    height: 100%;
+    margin: 0;
+    padding: 0 0 0 .5em;
+    color: #fff;
+    cursor: pointer;
+} 
+
+
+/* leaderboard table*/
+.datarow{
+    background-color: rgba(134, 220, 235, 0.5);
+}
+
+.datacell{
+    background-color: rgb(137,132,164, .5);
+}
+
+
+.datatable{
+    margin: 0px;
+    padding: 0px;
+}
+
+td{
+    height: 30px;
+}
+
+table th , table td{
+    text-align: center;
+}
+
+.floater{
+    margin-left: 40px;
+    
+}
+/* stats messages*/
+.bigbrain{
+    height: 100px;
+    width: 100px;
+    transform: scaleX(-1);
+    align-self: right;
+    margin-left: 40px;
+}
+
+table {
+    padding: 10px;
+    border: 2px solid #1c87c9;
+    border-radius: 5px;
+    text-align: center;
+}
+th{
+    background-color: rgb(204, 172, 136);
+}
+tbody>tr:nth-child(even){
+    background-color: #83bee2;
+}
+tbody>tr:nth-child(odd){
+    background-color: #c9d2d8;
+}
+/* color to first row */
+/* tbody>:nth-child(1){ 
+    background-color:rgba(223,221,119,.75);
+    animation: linear-gradient 10s linear infinite;
+}
+tbody>:nth-child(2){ 
+    background-color: rgba(132,134,124);
+}
+tbody>:nth-child(3){ 
+    background-color: rgba(139,93,32,.75);
+} */
+
+@keyframes linear-gradient {
+	0% {
+		background-position: 0% 50%
+	}
+
+	100% {
+		background-position: 400% 400%
+	}
+}

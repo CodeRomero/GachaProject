@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-toggleable-sm fixed-top">
+    
+        
+        <img class="navbar-brand" src="assets/img/Pokeloot_Logo.png" width="200" height="200" class="img-fluid"
+            style="max-width: 300; max-height: 100;">
+        
+        <div *ngIf="isLogin" class="navbar-toggler" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation" style="border: none;">
+            <div class="dropdown">
+            <button class="dropdown-button" type="button" data-toggle="collapse" (click)="toggleNavbar = !toggleNavbar">
+                <span>Menu</span>
+            </button>
+            <div *ngIf="toggleNavbar" class="dropdown-list"> 
+                <span>
+                <a routerLink="/Home" class="nav-link">Home</a>
+                <a routerLink="/Game" class="nav-link">Game</a>
+                <a routerLink="/Profile" class="nav-link">Profile</a>
+                <a routerLink="/UnlockCard" class="nav-link">Unlock <br>Card</a>
+                <a routerLink="/Collection" class="nav-link">View <br>Collection</a>
+                <a routerLink="/Friends" class="nav-link">Friends</a>
+                <a routerLink="/Leaderboard" class="nav-link">Leaderboard</a>
+                <a routerLink="/Messages" class="nav-link">Messages</a>
+                <a (click)="Logout()" class="pointerCursor nav-link">Signout</a>
+                </span>
+            </div> 
+            </div>
+        </div>
+        <div *ngIf="isLogin" class="collapse navbar-collapse" id="navbarSupportedContent" style="font-size:large;" >
+            
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a routerLink="/Home" class="nav-link">Home</a>
+                </li>
+                  
+                <li class="nav-item">
+                    <a routerLink="/Game" class="nav-link">Game</a>
+                </li>
+                  
+                <li class="nav-item">
+                    <a routerLink="/Profile" class="nav-link">Profile</a>
+                </li>
+                  
+                <li class="nav-item">
+                    <a routerLink="/UnlockCard" class="nav-link">Unlock Card</a>
+                </li>
+                  
+                <li class="nav-item">
+                    <a routerLink="/Collection" class="nav-link">View Collection</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/Friends" class="nav-link">Friends</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/Messages" class="nav-link">Messages</a>
+                </li>
+                <li>
+                    <a routerLink="/Leaderboard" class="nav-link">Leaderboard</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a (click)="Logout()" class="pointerCursor nav-link">Signout</a>
+                </li>
+            </ul> 
+        </div>
+   
+</nav> 
+

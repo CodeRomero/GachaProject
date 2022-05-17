@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a6c9f43a-1b38-436f-bf52-feeb6471229b": {
+      "ProjectGuid": "a6c9f43a-1b38-436f-bf52-feeb6471229b",
+      "DisplayName": "MinigamesAPI",
+      "ColorIndex": 0
+    },
+    "3ae83c3e-61d3-4eeb-ae17-e3634d799879": {
+      "ProjectGuid": "3ae83c3e-61d3-4eeb-ae17-e3634d799879",
+      "DisplayName": "MinigamesBusinessLayerMethods",
+      "ColorIndex": 1
+    },
+    "a8f3e3ba-d1d6-484b-9a81-ecafc4b7cd3b": {
+      "ProjectGuid": "a8f3e3ba-d1d6-484b-9a81-ecafc4b7cd3b",
+      "DisplayName": "MinigamesDatabase",
+      "ColorIndex": 2
+    },
+    "e234790b-69d0-4445-a7ca-cce8ce6a48e5": {
+      "ProjectGuid": "e234790b-69d0-4445-a7ca-cce8ce6a48e5",
+      "DisplayName": "MinigamesTests",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}
