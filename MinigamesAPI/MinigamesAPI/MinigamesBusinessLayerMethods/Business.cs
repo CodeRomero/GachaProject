@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Http;
 using MinigamesDatabase.Models;
 using Newtonsoft.Json;
 using MinigamesDatabase;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace MinigamesBusinessLayerMethods
 {
@@ -120,22 +120,18 @@ namespace MinigamesBusinessLayerMethods
         }
 
         /// <summary>
-        /// Calls Poke API and gets a random Pokemon details.
+        /// Calls 3rd party Poke API and gets 1 of 898 random Pokemon details.
         /// </summary>
         /// <returns>Serialized Pokemon data for a random Pokemon.</returns>
         public async Task<string> RandomPokemonAsync()
         {
-            // get random number for pokemon id
             var rand = new Random();
-            int id = rand.Next(1, 899); // 898 total pokemon
-            // make http request
-            var client = new RestClient(_pokeApi + id);
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            var body = @"";
-            request.AddParameter("text/plain", body, ParameterType.RequestBody);
-            IRestResponse response = await client.ExecuteAsync(request);
-            return response.Content;
+            int id = rand.Next(1, 899); 
+
+            var client = new HttpClient();
+            client.BaseAddress = new Uri($"{_pokeApi}+{id}");
+            var request = client.GetAsync($"{id}");
+            return request.ToString();
         }
 
         /// <summary>

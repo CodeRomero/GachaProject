@@ -18,17 +18,23 @@ namespace MinigamesAPI.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly ILogger<GamesController> _logger;
-        private readonly IBusiness _businessModel;
-        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public GamesController(IBusiness businessModel, ILogger<GamesController> logger, DataContext dataContext, IWebHostEnvironment hostEnvironment)
+        #region private fields
+        private readonly ILogger<GamesController> _logger;
+        private readonly IBusiness _business;
+        private readonly IWebHostEnvironment _hostEnvironment;
+        #endregion
+
+        #region Constructor
+        public GamesController(IBusiness business, ILogger<GamesController> logger, DataContext dataContext, IWebHostEnvironment hostEnvironment)
         {
-            _businessModel = businessModel;
+            _business = business;
             _logger = logger;
             _hostEnvironment = hostEnvironment;
         }
+        #endregion
 
+        #region Management methods
         /// <summary>
         /// Returns a list of all  games description
         /// </summary>
@@ -36,24 +42,17 @@ namespace MinigamesAPI.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> GetGameInfoListAsync()
         {
-            var games = await _businessModel.GetGameInfoListAsync();
+            var games = await _business.GetGameInfoListAsync();
             if (games != null)
                 return StatusCode(200, games);
             else
                 return StatusCode(500);
         }
 
-        [HttpGet("Wtp")]
-        public async Task<IActionResult> GetRandomPokemon()
-        {
-            var pokemon = await _businessModel.WhosThatPokemonGameAsync();
-            return StatusCode(200, pokemon);
-        }
-
         [HttpGet("SingleGame/{id}")]
         public async Task<IActionResult> GetSingleGame(int id)
         {
-            GameDetail gameInfo = await _businessModel.SingleGameAsync(id);
+            GameDetail gameInfo = await _business.SingleGameAsync(id);
 
             if (gameInfo != null)
             {
@@ -75,7 +74,7 @@ namespace MinigamesAPI.Controllers
         {
             gameDetail.ImageName = await SaveImage(gameDetail.ImageFile);
 
-            GameInfo gameInfo = await _businessModel.CreateGameAsync(gameDetail);
+            GameInfo gameInfo = await _business.CreateGameAsync(gameDetail);
 
 
             if (gameInfo != null)
@@ -104,7 +103,7 @@ namespace MinigamesAPI.Controllers
 
             }
 
-            GameInfo gameInfo = await _businessModel.ModifyGameAsync(gameDetail);
+            GameInfo gameInfo = await _business.ModifyGameAsync(gameDetail);
 
 
             if (gameInfo != null)
@@ -120,7 +119,7 @@ namespace MinigamesAPI.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> DeleteGame(int id)
         {
-            GameInfo gameInfo = await _businessModel.DeleteGameAsync(id);
+            GameInfo gameInfo = await _business.DeleteGameAsync(id);
 
 
             if (gameInfo.ImagePath != null || gameInfo.ImagePath != "")
@@ -145,58 +144,33 @@ namespace MinigamesAPI.Controllers
             return imageName;
         }
 
-        [NonAction]
-        public void DeleteImage(string imageName)
-        {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
-            if (System.IO.File.Exists(imagePath)) 
-            {
-                System.IO.File.Delete(imagePath);
-            }
-        }
-
         [HttpPost("Add")]
         public async Task<IActionResult> AddGameInfo(GameInfo gameInfo)
         {
-            if (await _businessModel.AddGameInfoAsync(gameInfo))
+            if (await _business.AddGameInfoAsync(gameInfo))
                 return StatusCode(201);
             else
                 return StatusCode(500);
         }
+        #endregion
 
-        [HttpPost("RpsWin")]
-        public async Task<IActionResult> RpsWin(int userId)
-        {
-            var success = await _businessModel.RpsWinAsync(userId);
-            if(success)
-            {
-                return StatusCode(200, success);
-            }
-            return BadRequest(new { message = "Error, Something went wrong.", status = -1 });
-        }
 
-        [HttpPost("RpsLose")]
-        public async Task<IActionResult> RpsLose(int userId)
-        {
-            var success = await _businessModel.RpsLoseAsync(userId);
-            if (success)
-            {
-                return StatusCode(200, success);
-            }
-            return BadRequest(new { message = "Error, Something went wrong.", status = -1 });
-        }
 
-        [HttpGet("RpsRecord/{userId}")]
-        public async Task<IActionResult> RpsRecord(int userId)
+
+
+        #region WTP
+
+        [HttpGet("wtp")]
+        public async Task<IActionResult> GetRandomPokemon()
         {
-            var success = await _businessModel.RpsRecordAsync(userId);
-            return StatusCode(200, success);
+            var pokemon = await _business.WhosThatPokemonGameAsync();
+            return StatusCode(200, pokemon);
         }
 
         [HttpPost("WtpWin")]
         public async Task<IActionResult> WtpWinAsync(int userId)
         {
-            var success =await _businessModel.WtpWinAsync(userId);
+            var success = await _business.WtpWinAsync(userId);
             if (success)
             {
                 return StatusCode(200, success);
@@ -207,7 +181,7 @@ namespace MinigamesAPI.Controllers
         [HttpPost("WtpLose")]
         public async Task<IActionResult> WtpLose(int userId)
         {
-            var success = await _businessModel.WtpLoseAsync(userId);
+            var success = await _business.WtpLoseAsync(userId);
             if (success)
             {
                 return StatusCode(200, success);
@@ -218,14 +192,62 @@ namespace MinigamesAPI.Controllers
         [HttpGet("WtpRecord/{userId}")]
         public async Task<IActionResult> WtpRecord(int userId)
         {
-            var success = await _businessModel.WtpRecordAsync(userId);
+            var success = await _business.WtpRecordAsync(userId);
             return StatusCode(200, success);
         }
+        #endregion
 
+
+
+
+
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Images", imageName);
+            if (System.IO.File.Exists(imagePath)) 
+            {
+                System.IO.File.Delete(imagePath);
+            }
+        }
+
+
+        #region RPS
+        [HttpPost("RpsWin")]
+        public async Task<IActionResult> RpsWin(int userId)
+        {
+            var success = await _business.RpsWinAsync(userId);
+            if (success)
+            {
+                return StatusCode(200, success);
+            }
+            return BadRequest(new { message = "Error, Something went wrong.", status = -1 });
+        }
+
+        [HttpPost("RpsLose")]
+        public async Task<IActionResult> RpsLose(int userId)
+        {
+            var success = await _business.RpsLoseAsync(userId);
+            if (success)
+            {
+                return StatusCode(200, success);
+            }
+            return BadRequest(new { message = "Error, Something went wrong.", status = -1 });
+        }
+
+        [HttpGet("RpsRecord/{userId}")]
+        public async Task<IActionResult> RpsRecord(int userId)
+        {
+            var success = await _business.RpsRecordAsync(userId);
+            return StatusCode(200, success);
+        }
+        #endregion
+
+        #region CAP
         [HttpPost("CapWin")]
         public async Task<IActionResult> CapWin(int userId)
         {
-            var success = await _businessModel.CapWinAsync(userId);
+            var success = await _business.CapWinAsync(userId);
             if (success)
             {
                 return StatusCode(200, success);
@@ -236,7 +258,7 @@ namespace MinigamesAPI.Controllers
         [HttpPost("CapLose")]
         public async Task<IActionResult> CapLose(int userId)
         {
-            var success = await _businessModel.CapLoseAsync(userId);
+            var success = await _business.CapLoseAsync(userId);
             if (success)
             {
                 return StatusCode(200, success);
@@ -247,43 +269,54 @@ namespace MinigamesAPI.Controllers
         [HttpGet("CapRecord/{userId}")]
         public async Task<IActionResult> CapRecord(int userId)
         {
-            var success = await _businessModel.CapRecordAsync(userId);
+            var success = await _business.CapRecordAsync(userId);
             return StatusCode(200, success);
         }
+        #endregion
 
-        [HttpPut("WamPlayed/{userId}")]
-        public async Task<IActionResult> WamPlayed(int userId, int highScore)
-        {
-            var success = await _businessModel.WamPlayedAsync(userId, highScore);
-            return StatusCode(200, success);
-        }
-
-        [HttpGet("WamRecord/{userId}")]
-        public async Task<IActionResult> WamRecord(int userId)
-        {
-            var success = await _businessModel.WamHighScoreAsync(userId);
-            return StatusCode(200, success);
-        }
-
+        #region PHM
         [HttpPut("PhmPlayed/{userId}")]
         public async Task<IActionResult> PhmPlayed(int userId)
         {
-            var success = await _businessModel.PhmPlayedAsync(userId);
+            var success = await _business.PhmPlayedAsync(userId);
             return StatusCode(200, success);
         }
 
         [HttpPut("PhmWin/{userId}")]
         public async Task<IActionResult> PhmWin(int userId)
         {
-            var success = await _businessModel.PhmWinAsync(userId);
+            var success = await _business.PhmWinAsync(userId);
             return StatusCode(200, success);
         }
 
         [HttpGet("PhmRecord/{userId}")]
         public async Task<IActionResult> PhmRecord(int userId)
         {
-            var success = await _businessModel.PhmRecordAsync(userId);
+            var success = await _business.PhmRecordAsync(userId);
             return StatusCode(200, success);
         }
+        #endregion
+
+        #region WAM
+        [HttpPut("WamPlayed/{userId}")]
+        public async Task<IActionResult> WamPlayed(int userId, int highScore)
+        {
+            var success = await _business.WamPlayedAsync(userId, highScore);
+            return StatusCode(200, success);
+        }
+
+        [HttpGet("WamRecord/{userId}")]
+        public async Task<IActionResult> WamRecord(int userId)
+        {
+            var success = await _business.WamHighScoreAsync(userId);
+            return StatusCode(200, success);
+        }
+        #endregion
+
+
+
+
+
+
     }
 }

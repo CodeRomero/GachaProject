@@ -1,9 +1,9 @@
-using BusinessLayer;
+using MinigamesBusinessLayerMethods;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Models;
-using P3Database;
+using MinigamesDatabase;
+using MinigamesDatabase.Models;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -13,18 +13,18 @@ namespace GamesApiTests
     public class UnitTests
     {
         //create in-memory DB for future use (not needed yet)
-        DbContextOptions<DataContext> options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestingDb").Options;
-        NullLogger<BusinessModel> nullLogger = new NullLogger<BusinessModel>();
+        //DbContextOptions<DataContext> options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "TestingDb").Options;
+        NullLogger<Business> nullLogger = new NullLogger<Business>();
 
         [Fact]
         public void WhosThatPokemonPass()
         {
             // Arrange
-            BusinessModel businessModel = new BusinessModel();
+            Business business = new Business();
             string result;
 
             // Act
-            result = businessModel.WhosThatPokemonGameAsync().Result;
+            result = business.WhosThatPokemonGameAsync().Result;
 
             // Assert
             Assert.NotNull(result);
@@ -34,11 +34,11 @@ namespace GamesApiTests
         public void RandomPokemonPass()
         {
             // Arrange
-            BusinessModel businessModel = new BusinessModel();
+            Business business = new Business();
             string result;
 
             // Act
-            result = businessModel.RandomPokemonAsync().Result;
+            result = business.RandomPokemonAsync().Result;
 
             // Assert
             Assert.NotNull(result);
@@ -57,14 +57,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     GamesWon = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(rpsgameStat);
                 context.SaveChanges();
-                result = businessModel.RpsWinAsync(rpsgameStat.UserId).Result;
+                result = business.RpsWinAsync(rpsgameStat.UserId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -79,12 +79,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.RpsWinAsync(userId).Result;
+                result = business.RpsWinAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -104,14 +104,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     GamesWon = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(rpsgameStat);
                 context.SaveChanges();
-                result = businessModel.RpsLoseAsync(rpsgameStat.UserId).Result;
+                result = business.RpsLoseAsync(rpsgameStat.UserId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -125,12 +125,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.RpsLoseAsync(userId).Result;
+                result = business.RpsLoseAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -150,14 +150,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     GamesWon = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(wtpgameStat);
                 context.SaveChanges();
-                result = businessModel.WtpWinAsync(wtpgameStat.UserId).Result;
+                result = business.WtpWinAsync(wtpgameStat.UserId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -172,12 +172,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.WtpWinAsync(userId).Result;
+                result = business.WtpWinAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -197,14 +197,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     GamesWon = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(wtpgameStat);
                 context.SaveChanges();
-                result = businessModel.WtpLoseAsync(wtpgameStat.UserId).Result;
+                result = business.WtpLoseAsync(wtpgameStat.UserId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -219,12 +219,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.WtpLoseAsync(userId).Result;
+                result = business.WtpLoseAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -245,14 +245,14 @@ namespace GamesApiTests
                     GamesWon = 1,
                     AverageCatchChance = 0.5
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(capgameStat);
                 context.SaveChanges();
-                result = businessModel.CapWinAsync(capgameStat.UserId).Result;
+                result = business.CapWinAsync(capgameStat.UserId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -267,12 +267,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.CapWinAsync(userId).Result;
+                result = business.CapWinAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -293,14 +293,14 @@ namespace GamesApiTests
                     GamesWon = 1,
                     AverageCatchChance = 0.5
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(capgameStat);
                 context.SaveChanges();
-                result = businessModel.CapLoseAsync(capgameStat.UserId).Result;
+                result = business.CapLoseAsync(capgameStat.UserId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -315,12 +315,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.CapLoseAsync(userId).Result;
+                result = business.CapLoseAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is successfully updated
@@ -340,14 +340,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     GamesWon = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(rpsgameStat);
                 context.SaveChanges();
-                result = businessModel.RpsRecordAsync(rpsgameStat.UserId).Result;
+                result = business.RpsRecordAsync(rpsgameStat.UserId).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if record is returned
@@ -362,12 +362,12 @@ namespace GamesApiTests
                 // Arrange
                 string result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.RpsRecordAsync(userId).Result;
+                result = business.RpsRecordAsync(userId).Result;
 
                 // Assert
                 Assert.Null(result); // result is null if no record is returned
@@ -387,14 +387,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     GamesWon = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(wtpgameStat);
                 context.SaveChanges();
-                result = businessModel.WtpRecordAsync(wtpgameStat.UserId).Result;
+                result = business.WtpRecordAsync(wtpgameStat.UserId).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if record is returned
@@ -409,12 +409,12 @@ namespace GamesApiTests
                 // Arrange
                 string result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.WtpRecordAsync(userId).Result;
+                result = business.WtpRecordAsync(userId).Result;
 
                 // Assert
                 Assert.Null(result); // result is null if no record is returned
@@ -435,14 +435,14 @@ namespace GamesApiTests
                     GamesWon = 1,
                     AverageCatchChance = 0.5
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(capgameStat);
                 context.SaveChanges();
-                result = businessModel.CapRecordAsync(capgameStat.UserId).Result;
+                result = business.CapRecordAsync(capgameStat.UserId).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if record is returned
@@ -457,12 +457,12 @@ namespace GamesApiTests
                 // Arrange
                 string result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.CapRecordAsync(userId).Result;
+                result = business.CapRecordAsync(userId).Result;
 
                 // Assert
                 Assert.Null(result); // result is null if no record is returned
@@ -478,12 +478,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.PhmWinAsync(userId).Result;
+                result = business.PhmWinAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is added
@@ -504,14 +504,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     HighScore = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(wamgameStat);
                 context.SaveChanges();
-                result = businessModel.WamPlayedAsync(wamgameStat.UserId, score).Result;
+                result = business.WamPlayedAsync(wamgameStat.UserId, score).Result;
 
                 // Assert
                 Assert.True(result);
@@ -526,13 +526,13 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.PhmWinAsync(userId).Result;
-                result = businessModel.PhmWinAsync(userId).Result; // play game twice
+                result = business.PhmWinAsync(userId).Result;
+                result = business.PhmWinAsync(userId).Result; // play game twice
 
                 // Assert
                 Assert.True(result); // result is true if record is updated
@@ -548,12 +548,12 @@ namespace GamesApiTests
                 bool result;
                 int userId = 1;
                 int score = 2;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.WamPlayedAsync(userId, score).Result;
+                result = business.WamPlayedAsync(userId, score).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record createed
@@ -568,12 +568,12 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.PhmPlayedAsync(userId).Result;
+                result = business.PhmPlayedAsync(userId).Result;
 
                 // Assert
                 Assert.True(result); // result is true if record is added
@@ -592,14 +592,14 @@ namespace GamesApiTests
                     TotalGamesPlayed = 1,
                     HighScore = 1,
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(wamgameStat);
                 context.SaveChanges();
-                result = businessModel.WamHighScoreAsync(wamgameStat.UserId).Result;
+                result = business.WamHighScoreAsync(wamgameStat.UserId).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if record is returned
@@ -614,12 +614,12 @@ namespace GamesApiTests
                 // Arrange
                 string result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.WamHighScoreAsync(userId).Result;
+                result = business.WamHighScoreAsync(userId).Result;
 
                 // Assert
                 Assert.Null(result); // result is null if no record is returned
@@ -635,13 +635,13 @@ namespace GamesApiTests
                 // Arrange
                 bool result;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.PhmPlayedAsync(userId).Result;
-                result = businessModel.PhmPlayedAsync(userId).Result; // play game 2nd time
+                result = business.PhmPlayedAsync(userId).Result;
+                result = business.PhmPlayedAsync(userId).Result; // play game 2nd time
 
                 // Assert
                 Assert.True(result); // result is true if record is updated
@@ -669,7 +669,7 @@ namespace GamesApiTests
                     ImagePath = "path 2",
                     Route = "route 2"
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
@@ -677,7 +677,7 @@ namespace GamesApiTests
                 context.Add(gameInfo1);
                 context.Add(gameInfo2);
                 context.SaveChanges();
-                result = businessModel.GameInfoListAsync().Result;
+                result = business.GameInfoListAsync().Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if list is returned
@@ -698,12 +698,12 @@ namespace GamesApiTests
                     ImagePath = "path",
                     Route = "route"
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.AddGameInfoAsync(gameInfo).Result;
+                result = business.AddGameInfoAsync(gameInfo).Result;
 
                 // Assert
                 Assert.True(result); // result is true if game added
@@ -718,14 +718,14 @@ namespace GamesApiTests
                 // Arrange
                 string result = null;
                 int userId = 1;
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                _ = businessModel.PhmPlayedAsync(userId);
-                _ = businessModel.PhmWinAsync(userId);
-                result = businessModel.PhmRecordAsync(userId).Result;
+                _ = business.PhmPlayedAsync(userId);
+                _ = business.PhmWinAsync(userId);
+                result = business.PhmRecordAsync(userId).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if record exists
@@ -749,12 +749,12 @@ namespace GamesApiTests
                     //ImageFile = ?
                     OldImageName = "Neat image's old name"
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                result = businessModel.CreateGameAsync(gameDetail).Result;
+                result = business.CreateGameAsync(gameDetail).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if game created
@@ -782,7 +782,7 @@ namespace GamesApiTests
                     ImagePath = "path 2",
                     Route = "route 2"
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
@@ -790,7 +790,7 @@ namespace GamesApiTests
                 context.Add(gameInfo1);
                 context.Add(gameInfo2);
                 context.SaveChanges();
-                result = businessModel.GetGameInfoListAsync().Result;
+                result = business.GetGameInfoListAsync().Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if list returned
@@ -815,13 +815,13 @@ namespace GamesApiTests
                     //ImageFile = ?
                     OldImageName = "Neat image's old name"
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                testInfo = businessModel.CreateGameAsync(gameDetail).Result;
-                result = businessModel.DeleteGameAsync(testInfo.Id).Result;
+                testInfo = business.CreateGameAsync(gameDetail).Result;
+                result = business.DeleteGameAsync(testInfo.Id).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if game deleted
@@ -857,13 +857,13 @@ namespace GamesApiTests
                     //ImageFile = ?
                     OldImageName = "Neat image's old name"
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
-                businessModel.CreateGameAsync(gameDetail);
-                result = businessModel.ModifyGameAsync(gameDetailUpdated).Result;
+                business.CreateGameAsync(gameDetail);
+                result = business.ModifyGameAsync(gameDetailUpdated).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null if game modified
@@ -884,14 +884,14 @@ namespace GamesApiTests
                     ImagePath = "path",
                     Route = "route"
                 };
-                BusinessModel businessModel = new BusinessModel(context, nullLogger);
+                Business business = new Business(context, nullLogger);
 
                 // Act
                 context.Database.EnsureCreated();
                 context.Database.EnsureDeleted();
                 context.Add(gameInfo);
                 context.SaveChanges();
-                result = businessModel.SingleGameAsync(gameInfo.Id).Result;
+                result = business.SingleGameAsync(gameInfo.Id).Result;
 
                 // Assert
                 Assert.NotNull(result); // result is not null 

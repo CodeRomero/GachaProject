@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MinigamesBusinessLayerMethods;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace MinigamesAPI
 {
@@ -62,8 +64,7 @@ namespace MinigamesAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => 
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MinigamesAPI v1"),
-                    c.RoutePrefix = string.Empty;
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MinigamesAPI v1");
                 });
             }
 
