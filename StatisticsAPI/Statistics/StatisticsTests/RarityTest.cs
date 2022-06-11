@@ -1,6 +1,6 @@
-﻿using BuisinessLayerMethods;
-using Microsoft.EntityFrameworkCore;
-using RepositoryModels;
+﻿using Microsoft.EntityFrameworkCore;
+using StatisticsBusinessLayerMethods;
+using StatisticsRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace P3_Statisitcs_Testing
+namespace StatisticsTests
 {
     public class RarityTest
     {
-        DbContextOptions<P3Context> options = new DbContextOptionsBuilder<P3Context>().UseInMemoryDatabase(databaseName: "testingDbRarity").Options;
+        DbContextOptions<GachaContext> options = new DbContextOptionsBuilder<GachaContext>().UseInMemoryDatabase(databaseName: "testingDbRarity").Options;
         //================================List Users of Most Rarity ============================
         [Fact]
         public void UserListByMostRarityCategoryPass()
         {
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 // Arrange
                 List<UserRarityMapperModel> result = new List<UserRarityMapperModel>();
@@ -117,7 +117,7 @@ namespace P3_Statisitcs_Testing
         [Fact]
         public void UserListByMostRarityCategoryNull()
         {
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 // Arrange
                 List<UserRarityMapperModel> result = new List<UserRarityMapperModel>();
@@ -135,7 +135,7 @@ namespace P3_Statisitcs_Testing
         [Fact]
         public void PercentOfRarityCategoryPass()
         {
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 // Arrange
                 int result = 0;
@@ -219,7 +219,7 @@ namespace P3_Statisitcs_Testing
         [Fact]
         public void TotalRarityCategoryForUserPass()
         {
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 // Arrange
                 int result = 0;

@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BuisinessLayerMethods;
-using RepositoryModels;
+using StatisticsRepository;
+using StatisticsBusinessLayerMethods;
 
-namespace P3_Statistics_API.Controllers
+namespace Statistics.Controllers
 {
 
     //[Route("api/[controller]")]

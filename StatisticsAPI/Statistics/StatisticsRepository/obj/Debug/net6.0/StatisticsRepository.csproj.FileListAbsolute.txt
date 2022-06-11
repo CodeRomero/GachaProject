@@ -1,0 +1,5 @@
+C:\Users\Christian\Desktop\Code\PokeLootV2\GachaProject\StatisticsAPI\Statistics\StatisticsRepository\obj\Debug\net6.0\StatisticsRepository.csproj.AssemblyReference.cache
+C:\Users\Christian\Desktop\Code\PokeLootV2\GachaProject\StatisticsAPI\Statistics\StatisticsRepository\obj\Debug\net6.0\StatisticsRepository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Christian\Desktop\Code\PokeLootV2\GachaProject\StatisticsAPI\Statistics\StatisticsRepository\obj\Debug\net6.0\StatisticsRepository.AssemblyInfoInputs.cache
+C:\Users\Christian\Desktop\Code\PokeLootV2\GachaProject\StatisticsAPI\Statistics\StatisticsRepository\obj\Debug\net6.0\StatisticsRepository.AssemblyInfo.cs
+C:\Users\Christian\Desktop\Code\PokeLootV2\GachaProject\StatisticsAPI\Statistics\StatisticsRepository\obj\Debug\net6.0\StatisticsRepository.csproj.CoreCompileInputs.cache
