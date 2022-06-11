@@ -49,14 +49,6 @@ namespace GachaAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GachaAPI", Version = "v1" });
             });
-            //rescaffold new DB
-            //services.AddDbContext<P3DbClass>(options =>
-            //{
-            //    if (!options.IsConfigured)
-            //    {
-            //        options.UseSqlServer("Server=tcp:databasetempp3.database.windows.net,1433;Initial Catalog=P3Database;Persist Security Info=False;User ID=P3Group;Password=Cheeseburger!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            //    }
-            //});
             services.AddScoped<IBusiness, Business>();
         }
 

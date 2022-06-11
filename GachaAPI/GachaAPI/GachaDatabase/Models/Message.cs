@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace P2DbContext.Models
+namespace GachaDatabase.Models
 {
     public partial class Message
     {
@@ -12,7 +12,6 @@ namespace P2DbContext.Models
         public DateTime Timestamp { get; set; }
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
-
         public virtual User Receiver { get; set; }
         public virtual User Sender { get; set; }
     }
