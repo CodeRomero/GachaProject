@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Statistics", "Statistics\Statistics.csproj", "{C9E84D9D-6642-4109-8910-E0BF176BCCCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Statistics", "Statistics\Statistics.csproj", "{C9E84D9D-6642-4109-8910-E0BF176BCCCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsBusinessLayerMethods", "StatisticsBusinessLayerMethods\StatisticsBusinessLayerMethods.csproj", "{418781D5-6AA4-4456-80AD-C07AA7A2D0D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsBusinessLayerMethods", "StatisticsBusinessLayerMethods\StatisticsBusinessLayerMethods.csproj", "{418781D5-6AA4-4456-80AD-C07AA7A2D0D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsRepository", "StatisticsRepository\StatisticsRepository.csproj", "{064F20B5-3256-4B5E-9C81-85C4C33B743C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsRepository", "StatisticsRepository\StatisticsRepository.csproj", "{064F20B5-3256-4B5E-9C81-85C4C33B743C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatisticsTests", "StatisticsTests\StatisticsTests.csproj", "{E183572A-A54C-4328-9289-9E34CDD85AAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatisticsTests", "StatisticsTests\StatisticsTests.csproj", "{E183572A-A54C-4328-9289-9E34CDD85AAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

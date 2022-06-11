@@ -1,19 +1,19 @@
 using Microsoft.EntityFrameworkCore;
-using RepositoryModels;
+using StatisticsRepository;
 using System;
 using Xunit;
 using System.Linq;
 using System.Threading.Tasks;
-using BuisinessLayerMethods;
+using StatisticsBusinessLayerMethods;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Configuration;
 
-namespace P3_Statisitcs_Testing
+namespace StatisticsTests
 {
     public class DemoTest
     {
-        DbContextOptions<P3Context> options = new DbContextOptionsBuilder<P3Context>().UseInMemoryDatabase(databaseName: "testingDb").Options;
+        DbContextOptions<GachaContext> options = new DbContextOptionsBuilder<GachaContext>().UseInMemoryDatabase(databaseName: "testingDb").Options;
 
 
         //================================List Top Coins Balance============================
@@ -52,7 +52,7 @@ namespace P3_Statisitcs_Testing
 
 
             //Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 //verify that the db was deleted and created anew
                 context.Database.EnsureDeleted();//delete any Db from a previous test
@@ -112,7 +112,7 @@ namespace P3_Statisitcs_Testing
 
 
             //Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 //verify that the db was deleted and created anew
                 context.Database.EnsureDeleted();//delete any Db from a previous test
@@ -173,7 +173,7 @@ namespace P3_Statisitcs_Testing
 
 
             //Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 //verify that the db was deleted and created anew
                 context.Database.EnsureDeleted();//delete any Db from a previous test
@@ -211,7 +211,7 @@ namespace P3_Statisitcs_Testing
             // string conn = ;
 
 
-            // P3Context context = new P3Context();
+            // GachaContext context = new GachaContext();
             // DbConnection conn = context.Database.OpenConnection("Server=localhost\\SQLEXPRESS;Database=p3;Trusted_Connection=True;");
 
 
@@ -311,7 +311,7 @@ namespace P3_Statisitcs_Testing
             };
 
             //Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 //verify that the db was deleted and created anew
                 context.Database.EnsureDeleted();//delete any Db from a previous test
@@ -336,7 +336,7 @@ namespace P3_Statisitcs_Testing
                 context.SaveChanges();
                 //Assert
 
-                List<TopPersentCompletedCollectionModel> list1 = usertest.TopPercentageCompletedCollection(2);
+                List<TopPercentCompletedCollectionModel> list1 = usertest.TopPercentageCompletedCollection(2);
 
                 Assert.NotNull(list1);
                 Assert.Equal(2, list1.Count());
@@ -377,10 +377,10 @@ namespace P3_Statisitcs_Testing
             };
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 
-                LeaderboardBuissnes leaderTest = new LeaderboardBuissnes(context);
+                LeaderboardBusiness leaderTest = new LeaderboardBusiness(context);
 
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
@@ -520,10 +520,10 @@ namespace P3_Statisitcs_Testing
 
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
 
-                LeaderboardBuissnes leaderTest = new LeaderboardBuissnes(context);
+                LeaderboardBusiness leaderTest = new LeaderboardBusiness(context);
 
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
@@ -686,7 +686,7 @@ namespace P3_Statisitcs_Testing
 
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
 
 
@@ -694,7 +694,7 @@ namespace P3_Statisitcs_Testing
                 context.Database.EnsureCreated();
 
                 // some method perhaps
-                LeaderboardBuissnes leaderTest = new LeaderboardBuissnes(context);
+                LeaderboardBusiness leaderTest = new LeaderboardBusiness(context);
 
                 context.Users.Add(user_1);
                 context.Users.Add(user_2);
@@ -772,14 +772,14 @@ namespace P3_Statisitcs_Testing
             };
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
 
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
                 // some method perhaps
-                LeaderboardBuissnes leaderTest = new LeaderboardBuissnes(context);
+                LeaderboardBusiness leaderTest = new LeaderboardBusiness(context);
 
                 context.PokemonCards.Add(card_1);
                 context.PokemonCards.Add(card_2);
@@ -929,7 +929,7 @@ namespace P3_Statisitcs_Testing
 
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
 
 
@@ -937,7 +937,7 @@ namespace P3_Statisitcs_Testing
                 context.Database.EnsureCreated();
 
                 // Some method perhaps
-                LeaderboardBuissnes leaderTest = new LeaderboardBuissnes(context);
+                LeaderboardBusiness leaderTest = new LeaderboardBusiness(context);
 
                 context.Users.Add(user_1);
                 context.Users.Add(user_2);
@@ -1110,13 +1110,13 @@ namespace P3_Statisitcs_Testing
 
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
 
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                LeaderboardBuissnes test = new LeaderboardBuissnes(context);
+                LeaderboardBusiness test = new LeaderboardBusiness(context);
 
                 context.PokemonCards.Add(card_1);
                 context.SaveChanges();

@@ -1,6 +1,6 @@
-﻿using BuisinessLayerMethods;
-using Microsoft.EntityFrameworkCore;
-using RepositoryModels;
+﻿using Microsoft.EntityFrameworkCore;
+using StatisticsBusinessLayerMethods;
+using StatisticsRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace P3_Statisitcs_Testing
+namespace StatisticsTests
 {
     public class AchievementTest
     {
-        DbContextOptions<P3Context> options = new DbContextOptionsBuilder<P3Context>().UseInMemoryDatabase(databaseName: "testingDbAchievement").Options;
+        DbContextOptions<GachaContext> options = new DbContextOptionsBuilder<GachaContext>().UseInMemoryDatabase(databaseName: "testingDbAchievement").Options;
 
         [Fact]
         public void UserListByMostAchievementsPass()
@@ -111,7 +111,7 @@ namespace P3_Statisitcs_Testing
             };
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 //verify that the db was deleted and created anew
                 context.Database.EnsureDeleted();//delete any Db from a previous test
@@ -186,7 +186,7 @@ namespace P3_Statisitcs_Testing
             };
 
             // Act
-            using (var context = new P3Context(options))
+            using (var context = new GachaContext(options))
             {
                 //verify that the db was deleted and created anew
                 context.Database.EnsureDeleted();//delete any Db from a previous test

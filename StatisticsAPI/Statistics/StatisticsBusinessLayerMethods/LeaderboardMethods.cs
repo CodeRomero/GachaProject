@@ -6,10 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Data;
-using Microsoft.Data.SqlClient;
-using Dapper;
-
-
+//using Microsoft.Data.SqlClient;
+//using Dapper;
 using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +17,11 @@ namespace StatisticsBusinessLayerMethods
     public class LeaderboardModel : ILeaderboardMethods 
     {
         public readonly GachaContext context;
-        public readonly DbConnection conn;
         private readonly ILogger<LeaderboardModel> logger;
         public LeaderboardModel (GachaContext context, ILogger<LeaderboardModel> logger)
         {
             this.logger = logger;
             this.context = context;
-            this.conn = context.Database.GetDbConnection();
 
         }
 
@@ -142,9 +138,6 @@ namespace StatisticsBusinessLayerMethods
         public List<TopPercentCompletedCollectionModel> TopPercentageCompletedCollection(int maxnumber)
 
         {
-
-          
-
             //Convert the Top X Number to string for concatination purpose
             
             List<TopPercentCompletedCollectionModel> dataResult = null;

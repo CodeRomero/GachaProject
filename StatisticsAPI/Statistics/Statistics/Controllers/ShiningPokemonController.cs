@@ -3,21 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RepositoryModels;
-using BuisinessLayerMethods;
+using StatisticsBusinessLayerMethods;
+using StatisticsRepository;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace P3_Statistics_API.Controllers
+namespace Statistics.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ShiningPokemonController : ControllerBase
     {
 
-        private readonly ILeaderboardBuissnes _leaderboard;
+        private readonly ILeaderboardBusiness _leaderboard;
 
-        public ShiningPokemonController(ILeaderboardBuissnes leaderboard)
+        public ShiningPokemonController(ILeaderboardBusiness leaderboard)
         {
             _leaderboard = leaderboard;
         }
