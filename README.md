@@ -10,13 +10,11 @@ These collectibles can be viewed and sorted as a collection by a user or even tr
 ## Technologies Used
 * ASP.NET Core Web API
 * Azure DevOps: CI/CD 
-* Entity Framework
+* Entity Framework (Code-First)
 * xUnit Testing 
 * Azure SQL Server 
-* User Stories
-* Agile-Scrum 
 * Docker 
-* Kubernetes
+* Azure Kubernetes
 
 ## Features
 
