@@ -1,6 +1,6 @@
 using System;
 
-namespace P2DbContext.Models
+namespace GachaDatabase.Models
 {
     public class FullPost
     {
@@ -11,13 +11,11 @@ namespace P2DbContext.Models
         public int? Price { get; set; }
         public bool StillAvailable { get; set; }
         public bool? IsShiny { get; set; }
-
         public string UserName { get; set; }
         public int UserId { get; set; }
         public int PostType { get; set; }
         public string PokemonName {get; set;}
         public int RarityId {get; set;}
-
         public string SpriteLink {get; set;}
 
 

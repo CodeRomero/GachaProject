@@ -3,17 +3,14 @@ using Xunit;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using P2DbContext.Models;
-using BusinessLayer;
 using System.Collections.Generic;
+using GachaDatabase.Models;
+using GachaMainBusinessMethods;
 
 namespace UnitTests
 {
     public class UnitTests
     {
-
-        DbContextOptions<P3DbClass> options = new DbContextOptionsBuilder<P3DbClass>().UseInMemoryDatabase(databaseName: "TestingDb").Options;
-
         [Fact]
         public void signUpTest()
         {
@@ -31,14 +28,14 @@ namespace UnitTests
             User resultUser;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                result = testBusinessModel.signUp(testUser);
+                result = testBusiness.signUp(testUser);
                 resultUser = context.Users.FirstOrDefault();
 
                 // Assert
@@ -84,21 +81,21 @@ namespace UnitTests
             User unmatchedPassword;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.SaveChanges();
 
-                resultUser = testBusinessModel.login(testUserName, testPassword);
-                failUser = testBusinessModel.login(failUserName, failPassword);
-                caseUser = testBusinessModel.login(testCaseUserName, testCasePassword);
-                unmatchedUser = testBusinessModel.login(failUserName, testPassword);
-                unmatchedPassword = testBusinessModel.login(testUserName, failPassword);
+                resultUser = testBusiness.login(testUserName, testPassword);
+                failUser = testBusiness.login(failUserName, failPassword);
+                caseUser = testBusiness.login(testCaseUserName, testCasePassword);
+                unmatchedUser = testBusiness.login(failUserName, testPassword);
+                unmatchedPassword = testBusiness.login(testUserName, failPassword);
 
                 // Assert
                 Assert.True(resultUser != null);
@@ -133,18 +130,18 @@ namespace UnitTests
             User failUser;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.SaveChanges();
 
-                resultUser = testBusinessModel.GetUserById(1);
-                failUser = testBusinessModel.GetUserById(2);
+                resultUser = testBusiness.GetUserById(1);
+                failUser = testBusiness.GetUserById(2);
 
                 // Assert
                 Assert.True(resultUser != null);
@@ -170,18 +167,18 @@ namespace UnitTests
             PokemonCard resultPokemon;
             PokemonCard failPokemon;
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.PokemonCards.Add(testPokemon);
                 context.SaveChanges();
 
-                resultPokemon = testBusinessModel.getPokemonById(150);
-                failPokemon = testBusinessModel.getPokemonById(29899778);
+                resultPokemon = testBusiness.getPokemonById(150);
+                failPokemon = testBusiness.getPokemonById(29899778);
 
                 // Assert
                 Assert.True(resultPokemon != null);
@@ -217,21 +214,21 @@ namespace UnitTests
             bool failResultUserDec;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.SaveChanges();
                 testUser.UserId = 1;
 
-                resultUserInc = testBusinessModel.incrementUserBalance(testUser, 10);
-                resultUserDec = testBusinessModel.incrementUserBalance(testUser, -10);
-                failResultUserInc = testBusinessModel.incrementUserBalance(failUser, 10);
-                failResultUserDec = testBusinessModel.incrementUserBalance(testUser, -30);
+                resultUserInc = testBusiness.incrementUserBalance(testUser, 10);
+                resultUserDec = testBusiness.incrementUserBalance(testUser, -10);
+                failResultUserInc = testBusiness.incrementUserBalance(failUser, 10);
+                failResultUserDec = testBusiness.incrementUserBalance(testUser, -30);
                 resultUser = context.Users.Where(x => x.UserId == testUser.UserId).FirstOrDefault();
 
                 // Assert
@@ -337,12 +334,12 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.Posts.Add(testPost1);
@@ -358,7 +355,7 @@ namespace UnitTests
                 context.SaveChanges();
                 testUser.UserId = 1;
 
-                testPosts = testBusinessModel.getDisplayBoard();
+                testPosts = testBusiness.getDisplayBoard();
 
                 // Assert
                 Assert.True(testPosts.Any());
@@ -420,22 +417,22 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.SaveChanges();
                 testUser.UserId = 1;
 
 
-                post1 = testBusinessModel.newPost(testPost1, testUser);
-                post2 = testBusinessModel.newPost(testPost2, testUser);
-                post3 = testBusinessModel.newPost(testPost3, testUser);
-                post4 = testBusinessModel.newPost(testPost4, testUser);
+                post1 = testBusiness.newPost(testPost1, testUser);
+                post2 = testBusiness.newPost(testPost2, testUser);
+                post3 = testBusiness.newPost(testPost3, testUser);
+                post4 = testBusiness.newPost(testPost4, testUser);
                 resultPost1 = context.DisplayBoards.Where(x => x.PostId == 1).FirstOrDefault();
                 resultPost2 = context.DisplayBoards.Where(x => x.PostId == 2).FirstOrDefault();
                 resultPost3 = context.DisplayBoards.Where(x => x.PostId == 3).FirstOrDefault();
@@ -515,12 +512,12 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.Users.Add(testUser2);
@@ -532,8 +529,8 @@ namespace UnitTests
                 testUser.UserId = 1;
                 testUser2.UserId = 2;
 
-                result = testBusinessModel.getUserCollection(testUser);
-                failResult = testBusinessModel.getUserCollection(testUser2);
+                result = testBusiness.getUserCollection(testUser);
+                failResult = testBusiness.getUserCollection(testUser2);
 
 
                 // Assert
@@ -630,12 +627,12 @@ namespace UnitTests
             User resultUser;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.PokemonCards.Add(testPokemon1);
@@ -648,17 +645,17 @@ namespace UnitTests
                 testUser.UserId = 1;
 
                 //since this uses rng, its impossible to test all the edge cases, but ran this about 10 times and had no errors
-                result1 = testBusinessModel.rollLootbox(testUser, 1);
-                result2 = testBusinessModel.rollLootbox(testUser, 1);
-                result3 = testBusinessModel.rollLootbox(testUser, 1);
-                result4 = testBusinessModel.rollLootbox(testUser, 1);
-                result5 = testBusinessModel.rollLootbox(testUser, 1);
-                result6 = testBusinessModel.rollLootbox(testUser, 2);
-                result7 = testBusinessModel.rollLootbox(testUser, 2);
-                result8 = testBusinessModel.rollLootbox(testUser, 2);
-                result9 = testBusinessModel.rollLootbox(testUser, 2);
-                result10 = testBusinessModel.rollLootbox(testUser, 3);
-                result11 = testBusinessModel.rollLootbox(testUser, 3);
+                result1 = testBusiness.rollLootbox(testUser, 1);
+                result2 = testBusiness.rollLootbox(testUser, 1);
+                result3 = testBusiness.rollLootbox(testUser, 1);
+                result4 = testBusiness.rollLootbox(testUser, 1);
+                result5 = testBusiness.rollLootbox(testUser, 1);
+                result6 = testBusiness.rollLootbox(testUser, 2);
+                result7 = testBusiness.rollLootbox(testUser, 2);
+                result8 = testBusiness.rollLootbox(testUser, 2);
+                result9 = testBusiness.rollLootbox(testUser, 2);
+                result10 = testBusiness.rollLootbox(testUser, 3);
+                result11 = testBusiness.rollLootbox(testUser, 3);
                 cardCollection = context.CardCollections.Where(x => x.UserId == testUser.UserId).ToList();
                 resultUser = context.Users.Where(x => x.UserId == testUser.UserId).FirstOrDefault();
 
@@ -849,12 +846,12 @@ namespace UnitTests
             Post failPost;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.Users.Add(testSeller);
@@ -879,11 +876,11 @@ namespace UnitTests
                 testPost3.PostId = 3;
                 testPost4.PostId = 4;
 
-                falseSame = testBusinessModel.buyFromPost(testPost1, testSeller);
-                failUnavailable = testBusinessModel.buyFromPost(testPost4, testUser); //false unavailble
-                resultTrue = testBusinessModel.buyFromPost(testPost1, testUser); //true
-                falseBalance = testBusinessModel.buyFromPost(testPost2, testUser); //false no balance
-                trueNewShiny = testBusinessModel.buyFromPost(testPost3, testUser); //true with shiny and new item
+                falseSame = testBusiness.buyFromPost(testPost1, testSeller);
+                failUnavailable = testBusiness.buyFromPost(testPost4, testUser); //false unavailble
+                resultTrue = testBusiness.buyFromPost(testPost1, testUser); //true
+                falseBalance = testBusiness.buyFromPost(testPost2, testUser); //false no balance
+                trueNewShiny = testBusiness.buyFromPost(testPost3, testUser); //true with shiny and new item
                 resultUser = context.Users.Where(x => x.UserId == testUser.UserId).FirstOrDefault();
                 resultSeller = context.Users.Where(x => x.UserId == testSeller.UserId).FirstOrDefault();
                 sellerMewtwo = context.CardCollections.Where(x => x.UserId == testSeller.UserId && x.PokemonId == 150).FirstOrDefault();
@@ -938,18 +935,18 @@ namespace UnitTests
             bool resultFail;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
                 context.Users.Add(testUser);
                 context.SaveChanges();
 
-                resultPass = testBusinessModel.RemoveUser(1);
-                resultFail = testBusinessModel.RemoveUser(2);
+                resultPass = testBusiness.RemoveUser(1);
+                resultFail = testBusiness.RemoveUser(2);
                 resultUser = context.Users.Where(x => x.UserId == 1).FirstOrDefault();
 
                 // Assert
@@ -979,19 +976,19 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
 
                 context.Posts.Add(testPost1);
                 context.SaveChanges();
 
-                resultPost = testBusinessModel.getPostById(1);
-                failPost = testBusinessModel.getPostById(2);
+                resultPost = testBusiness.getPostById(1);
+                failPost = testBusiness.getPostById(2);
                 realPost = context.Posts.Where(x => x.PostId == 1).FirstOrDefault();
 
                 // Assert
@@ -1020,12 +1017,12 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
 
                 context.Posts.Add(testPost1);
@@ -1035,7 +1032,7 @@ namespace UnitTests
                 realPost = context.Posts.Where(x => x.PostId == 1).FirstOrDefault();
 
                 // Assert
-                Assert.Equal(context, testBusinessModel.context);
+                Assert.Equal(context, testBusiness.context);
                 Assert.Equal(1, realPost.PostId);
                 Assert.Equal("this is a sales post", realPost.PostDescription);
 
@@ -1054,14 +1051,14 @@ namespace UnitTests
             // Act
 
 
-            BusinessModel testBusinessModel = new BusinessModel();
+            Business testBusiness = new Business();
 
 
 
-            realUser = testBusinessModel.context.Users.Where(x => x.UserId == 1).FirstOrDefault();
+            realUser = testBusiness.context.Users.Where(x => x.UserId == 1).FirstOrDefault();
 
             // Assert
-            Assert.True(testBusinessModel.context != null);
+            Assert.True(testBusiness.context != null);
             Assert.Equal(1, realUser.UserId);
             Assert.Equal("alain.duplan", realUser.UserName);
 
@@ -1084,19 +1081,19 @@ namespace UnitTests
             };
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
 
                 context.RarityTypes.Add(testRarity1);
                 context.RarityTypes.Add(testRarity2);
                 context.SaveChanges();
 
-                List<RarityType> resultList = testBusinessModel.GetRarityTypes();
+                List<RarityType> resultList = testBusiness.GetRarityTypes();
 
                 // Assert
                 Assert.Equal(2, resultList.Count);
@@ -1121,19 +1118,19 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
 
                 context.DisplayBoards.Add(displayBoard1);
                 context.SaveChanges();
 
-                resultPost = testBusinessModel.getPostInfo(1);
-                failPost = testBusinessModel.getPostInfo(2);
+                resultPost = testBusiness.getPostInfo(1);
+                failPost = testBusiness.getPostInfo(2);
                 realPost = context.DisplayBoards.Where(x => x.PostId == 1).FirstOrDefault();
 
                 // Assert
@@ -1173,12 +1170,12 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
 
                 context.Posts.Add(testPost1);
@@ -1186,9 +1183,9 @@ namespace UnitTests
                 context.SaveChanges();
                 testPost1.PostId = 1;
 
-                post1 = testBusinessModel.editPrice(1, 200);
-                post2 = testBusinessModel.editPrice(2, 200);
-                post3 = testBusinessModel.editPrice(3, 200);
+                post1 = testBusiness.editPrice(1, 200);
+                post2 = testBusiness.editPrice(2, 200);
+                post3 = testBusiness.editPrice(3, 200);
                 result = context.Posts.Where(x => x.PostId == testPost1.PostId).FirstOrDefault();
 
 
@@ -1249,12 +1246,12 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
 
                 context.CardCollections.Add(cardCollection1);
@@ -1262,11 +1259,11 @@ namespace UnitTests
                 context.CardCollections.Add(cardCollection3);
                 context.SaveChanges();
 
-                failed1 = testBusinessModel.favoriteCard(3, 150);
-                failed2 = testBusinessModel.favoriteCard(1, 360);
-                coll1 = testBusinessModel.favoriteCard(2, 150);
-                coll2 = testBusinessModel.favoriteCard(2, 151);
-                coll3 = testBusinessModel.favoriteCard(1, 150);
+                failed1 = testBusiness.favoriteCard(3, 150);
+                failed2 = testBusiness.favoriteCard(1, 360);
+                coll1 = testBusiness.favoriteCard(2, 150);
+                coll2 = testBusiness.favoriteCard(2, 151);
+                coll3 = testBusiness.favoriteCard(1, 150);
                 result1 = context.CardCollections.Where(x => x.UserId == 2 && x.PokemonId == 150).FirstOrDefault();
                 result2 = context.CardCollections.Where(x => x.UserId == 2 && x.PokemonId == 151).FirstOrDefault();
                 result3 = context.CardCollections.Where(x => x.UserId == 1 && x.PokemonId == 150).FirstOrDefault();
@@ -1375,7 +1372,7 @@ namespace UnitTests
             List<FullFriend> resultUser5;
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
@@ -1392,13 +1389,13 @@ namespace UnitTests
 
                 context.SaveChanges();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                resultUser1 = testBusinessModel.GetFriends(1);
-                resultUser2 = testBusinessModel.GetFriends(2);
-                resultUser3 = testBusinessModel.GetFriends(3);
-                resultUser4 = testBusinessModel.GetFriends(4);
-                resultUser5 = testBusinessModel.GetFriends(5);
+                resultUser1 = testBusiness.GetFriends(1);
+                resultUser2 = testBusiness.GetFriends(2);
+                resultUser3 = testBusiness.GetFriends(3);
+                resultUser4 = testBusiness.GetFriends(4);
+                resultUser5 = testBusiness.GetFriends(5);
 
 
                 // Assert
@@ -1517,7 +1514,7 @@ namespace UnitTests
 
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
@@ -1535,14 +1532,14 @@ namespace UnitTests
 
                 context.SaveChanges();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                resultUser1 = testBusinessModel.friendAction(1, 1);
-                resultUser2 = testBusinessModel.friendAction(1, 2);
-                resultUser3 = testBusinessModel.friendAction(1, 3);
-                resultUser4 = testBusinessModel.friendAction(1, 4);
-                resultUser5 = testBusinessModel.friendAction(1, 5);
-                resultUser6 = testBusinessModel.friendAction(1, 6);
+                resultUser1 = testBusiness.friendAction(1, 1);
+                resultUser2 = testBusiness.friendAction(1, 2);
+                resultUser3 = testBusiness.friendAction(1, 3);
+                resultUser4 = testBusiness.friendAction(1, 4);
+                resultUser5 = testBusiness.friendAction(1, 5);
+                resultUser6 = testBusiness.friendAction(1, 6);
                 friendsList1 = context.FriendsLists.Where(x => (x.SentRequest == 1 && x.RecievedRequest == 1) || (x.RecievedRequest == 1 && x.SentRequest == 1)).FirstOrDefault();
                 friendsList2 = context.FriendsLists.Where(x => (x.SentRequest == 1 && x.RecievedRequest == 2)).FirstOrDefault();
                 friendsList3 = context.FriendsLists.Where(x => (x.SentRequest == 1 && x.RecievedRequest == 3)).FirstOrDefault();
@@ -1595,15 +1592,15 @@ namespace UnitTests
             };
 
             // act
-            using (var context = new P3DbClass(options))
+            using (var context = new GachaDb(options))
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                testBusinessModel.signUp(user1);
-                testBusinessModel.signUp(user2);
-                bool succesful = testBusinessModel.PostMessage(newTestMessage);
+                testBusiness.signUp(user1);
+                testBusiness.signUp(user2);
+                bool succesful = testBusiness.PostMessage(newTestMessage);
                 context.SaveChanges();
 
                 var aMessage = context.Messages.FirstOrDefault();
@@ -1653,20 +1650,20 @@ namespace UnitTests
             };
 
             //act
-            using (var context = new P3DbClass(options))
+            using (var context = new GachaDb(options))
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                testBusinessModel.signUp(user1);
-                testBusinessModel.signUp(user2);
-                testBusinessModel.PostMessage(newTestMessage1);
-                testBusinessModel.PostMessage(newTestMessage2);
+                testBusiness.signUp(user1);
+                testBusiness.signUp(user2);
+                testBusiness.PostMessage(newTestMessage1);
+                testBusiness.PostMessage(newTestMessage2);
                 context.SaveChanges();
 
-                var result1 = testBusinessModel.GetMessagesBetween(user1.UserId, user2.UserId);
-                var result2 = testBusinessModel.GetMessagesBetween(user2.UserId, user1.UserId);
+                var result1 = testBusiness.GetMessagesBetween(user1.UserId, user2.UserId);
+                var result2 = testBusiness.GetMessagesBetween(user2.UserId, user1.UserId);
 
                 // assert
                 Assert.True(result1.Any() && result2.Any());
@@ -1712,19 +1709,19 @@ namespace UnitTests
             };
 
             //act
-            using (var context = new P3DbClass(options))
+            using (var context = new GachaDb(options))
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                testBusinessModel.signUp(user1);
-                testBusinessModel.signUp(user2);
-                testBusinessModel.PostMessage(newTestMessage1);
-                testBusinessModel.PostMessage(newTestMessage2);
+                testBusiness.signUp(user1);
+                testBusiness.signUp(user2);
+                testBusiness.PostMessage(newTestMessage1);
+                testBusiness.PostMessage(newTestMessage2);
                 context.SaveChanges();
 
-                bool successful = testBusinessModel.DeleteMessagesBetween(user1.UserId, user2.UserId);
+                bool successful = testBusiness.DeleteMessagesBetween(user1.UserId, user2.UserId);
 
                 // assert
                 Assert.True(successful);
@@ -1772,20 +1769,20 @@ namespace UnitTests
 
             //act
             //act
-            using (var context = new P3DbClass(options))
+            using (var context = new GachaDb(options))
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                testBusinessModel.signUp(user1);
-                testBusinessModel.signUp(user2);
-                testBusinessModel.signUp(user3);
-                testBusinessModel.PostMessage(newTestMessage1);
+                testBusiness.signUp(user1);
+                testBusiness.signUp(user2);
+                testBusiness.signUp(user3);
+                testBusiness.PostMessage(newTestMessage1);
                 context.SaveChanges();
 
-                var result1 = testBusinessModel.GetOngoingConversationUsers(user1.UserId);
-                var result2 = testBusinessModel.GetOngoingConversationUsers(user2.UserId);
+                var result1 = testBusiness.GetOngoingConversationUsers(user1.UserId);
+                var result2 = testBusiness.GetOngoingConversationUsers(user2.UserId);
 
                 // assert
                 Assert.True(result1.Any() && result2.Any());
@@ -1805,14 +1802,14 @@ namespace UnitTests
             string content = "test";
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                testBusinessModel.newPostComment(userId, postId, content);
+                testBusiness.newPostComment(userId, postId, content);
 
                 PostComment testResult = context.PostComments.Where(x => x.CommentPostId == 1).FirstOrDefault();
 
@@ -1852,7 +1849,7 @@ namespace UnitTests
             };
 
             // Act
-            using (var context = new P3DbClass(options))    // creates in memory database
+            using (var context = new GachaDb(options))    // creates in memory database
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
@@ -1863,9 +1860,9 @@ namespace UnitTests
 
                 context.SaveChanges();
 
-                BusinessModel testBusinessModel = new BusinessModel(context);
+                Business testBusiness = new Business(context);
 
-                var resultTestList = testBusinessModel.getCommentList(1);
+                var resultTestList = testBusiness.getCommentList(1);
 
                 // Assert
                 Assert.Equal(2, resultTestList.Count());

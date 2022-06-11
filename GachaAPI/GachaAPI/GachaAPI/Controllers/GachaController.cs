@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using P2DbContext.Models;
-using BusinessLayer;
-using Newtonsoft.Json;
+using GachaMainBusinessMethods;
+using System.Text.Json;
 using Microsoft.AspNetCore.Http;
+using GachaDatabase.Models;
 
 namespace GachaController
 {
@@ -16,110 +16,31 @@ namespace GachaController
     [ApiController]
     public class GachaController : Controller
     {
-        private readonly ILogger<GachaController> _logger;
+        #region Private fields
 
-        private readonly IBusinessModel _businessModel;
+        private readonly ILogger<GachaController> logger;
 
+        private readonly IBusiness business;
 
+        #endregion
+
+        #region Constructor
+        
         /// <summary>
         /// Constructor to inject the business layer
         /// </summary>
         /// <param name="businessModel">Business model object</param>
         /// <param name="logger">Logger object</param>
-        public GachaController(IBusinessModel businessModel, ILogger<GachaController> logger)
+        public GachaController(IBusiness business, ILogger<GachaController> logger)
         {
-            this._businessModel = businessModel;
-            this._logger = logger;
+            this.business = business;
+            this.logger = logger;
         }
+        #endregion
+
+        #region Account methods
 
         /// <summary>
-        /// https://localhost:44307/api/P2/DisplayBoard
-        /// Return the json object for each post in the database to build the display board
-        /// </summary>
-        /// <returns>List of Posts</returns>
-        [HttpGet("DisplayBoard")]
-        public List<FullPost> PostList()
-        {
-            List<FullPost> result = new List<FullPost>();
-            List<Post> playerList = _businessModel.getDisplayBoard();
-            foreach (Post post in playerList)
-            {
-                DisplayBoard displayBoard = _businessModel.getPostInfo(post.PostId);
-                string mainSprite = "https://wiki.p-insurgence.com/images/0/09/722.png"; //if a discussion post, use default image
-                string cardName = "";
-                int cardRare = 0;
-                if (post.PokemonId != null) //checks if it is sale or display post
-                {
-                    if (post.IsShiny == true) //checks with image to use
-                    {
-                        mainSprite = _businessModel.getPokemonById((int)post.PokemonId).SpriteLinkShiny;
-                    }
-                    else
-                    {
-                        mainSprite = _businessModel.getPokemonById((int)post.PokemonId).SpriteLink;
-                    }
-                    cardName = _businessModel.getPokemonById((int)post.PokemonId).PokemonName;
-                    cardRare = _businessModel.getPokemonById((int)post.PokemonId).RarityId;
-                }
-
-                FullPost instance = new FullPost()//creates full post object to be displayed
-                {
-                    PostId = post.PostId,
-                    PokemonId = post.PokemonId,
-                    PostTime = post.PostTime,
-                    PostDescription = post.PostDescription,
-                    Price = post.Price,
-                    StillAvailable = post.StillAvailable,
-                    IsShiny = post.IsShiny,
-                    UserId = displayBoard.UserId,
-                    PostType = displayBoard.PostType,
-                    PokemonName = cardName,
-                    RarityId = cardRare,
-                    UserName = _businessModel.GetUserById(displayBoard.UserId).UserName,
-                    SpriteLink = mainSprite
-
-                };
-                result.Add(instance);
-            }
-            result.Reverse();
-            return result;
-        }
-
-        /// <summary>
-        /// https://localhost:44307/api/P2/buyCard/3/2
-        /// Returns the result from buying a card
-        /// </summary>
-        /// <param name="postId">Post ID of a sale</param>
-        /// <param name="userId">Current User</param>
-        /// <returns>Dictionary conation output and outcome</returns>
-        [HttpGet("buyCard/{postId}/{userId}")]
-        public string buyCard(int postId, int userId)
-        {
-            
-            Post post = _businessModel.getPostById(postId);
-            User currentUser = _businessModel.GetUserById(userId);
-            Dictionary<string, bool> result = _businessModel.buyFromPost(post, currentUser);
-            string json = JsonConvert.SerializeObject(result.ToList());
-            return json;
-        }
-
-        /// <summary>
-        /// https://localhost:44307/api/P2/Pokemon/2
-        /// Returns the json object for a selected Pokemon
-        /// </summary>
-        /// <param name="id">id to select by</param>
-        /// <returns>Pokemon card</returns>
-        [HttpGet("Pokemon/{id}")]
-        public PokemonCard Pokemon(int id)
-        {
-            PokemonCard selectedCard = _businessModel.getPokemonById(id);
-            return selectedCard;
-        }
-
-
-
-        /// <summary>
-        /// https://localhost:44307/api/P2/Login/mason.sanborn/Revature
         /// Returns the json object for the validated user or null if the user does not exist
         /// </summary>
         /// <param name="username">input username</param>
@@ -128,68 +49,11 @@ namespace GachaController
         [HttpGet("Login/{username}/{password}")]
         public User Login(string username, string password)
         {
-            User currentUser = _businessModel.login(username, password);
+            User currentUser = business.login(username, password);
             return currentUser;
         }
 
-
-
         /// <summary>
-        /// https://localhost:44307/api/P2/Lootbox/2/1
-        /// Gets a random pokemon and adds it the the users collection with the id passed in
-        /// </summary>
-        /// <param name="userId">user id for user rolling lootbox</param>
-        /// <param name="boxType">type of box to roll</param>
-        /// <returns>Serialized string of dict containing PokemonCard object of the random choice and shiny boolean</returns>
-        [HttpGet("Lootbox/{userId}/{boxType}")]
-        //public Dictionary<PokemonCard, bool> Lootbox(int userId)
-        public string Lootbox(int userId, int boxType)
-        {
-            User currentUser = _businessModel.GetUserById(userId);
-            Dictionary<PokemonCard, bool> newCard;
-
-            //check boxtype for each case
-            if (boxType == 1)
-            {
-                const int lootBoxCost = 100;
-                _businessModel.incrementUserBalance(currentUser, -lootBoxCost);
-                newCard = _businessModel.rollLootbox(currentUser, 1);
-            }
-            else if (boxType == 2)
-            {
-                const int lootBoxCost = 500;
-                _businessModel.incrementUserBalance(currentUser, -lootBoxCost);
-                newCard = _businessModel.rollLootbox(currentUser, 2);
-            }
-            else
-            {
-                const int lootBoxCost = 1000;
-                _businessModel.incrementUserBalance(currentUser, -lootBoxCost);
-                newCard = _businessModel.rollLootbox(currentUser, 3);
-            }
-            
-            string json = JsonConvert.SerializeObject(newCard.ToList());
-            return json;
-        }
-
-
-        /// <summary>
-        /// https://localhost:44307/api/P2/UserCollection/2
-        /// Gets all the pokemon objects and their quanity in realtion to the input userId
-        /// </summary>
-        /// <param name="userId">id of desired users collection</param>
-        /// <returns>Serialized string of dict containing PokemonCard object and its relation to the users collection for quanities</returns>
-        [HttpGet("UserCollection/{userId}")]
-        public string UserCollection(int userId)
-        {
-            User currentUser = _businessModel.GetUserById(userId);
-            Dictionary<CardCollection, PokemonCard> userCollection = _businessModel.getUserCollection(currentUser);
-            string json = JsonConvert.SerializeObject(userCollection.ToList());
-            return json;
-        }
-
-        /// <summary>
-        /// https://localhost:44307/api/P2/UserProfile/2
         /// Gets an updated user object for achievment dsiplaying purposes
         /// </summary>
         /// <param name="userId">id of desired users object</param>
@@ -197,14 +61,12 @@ namespace GachaController
         [HttpGet("Profile/{userId}")]
         public string GetUserProfile(int userId)
         {
-            User currentUser = _businessModel.GetUserById(userId);
-            string json = JsonConvert.SerializeObject(currentUser);
+            User currentUser = business.GetUserById(userId);
+            string json = JsonSerializer.Serialize(currentUser);
             return json;
         }
 
-
         /// <summary>
-        /// https://localhost:44307/api/P2/Signup
         /// Gets all the pokemon objects and their quanity in realtion to the input userId
         /// </summary>
         /// <param name="userId">id of desired users collection</param>
@@ -212,7 +74,7 @@ namespace GachaController
         [HttpPost("Signup")]
         public ActionResult Signup(User userObj)
         {
-            bool isCreated = _businessModel.signUp(userObj);
+            bool isCreated = business.signUp(userObj);
 
             if (isCreated)
             {
@@ -223,7 +85,6 @@ namespace GachaController
         }
 
         /// <summary>
-        /// https://localhost:44307/api/P2/DeleteUser/18
         /// Removes a user from the database.
         /// </summary>
         /// <param name="userId">id of desired users collection</param>
@@ -234,7 +95,7 @@ namespace GachaController
             bool isDeleted;
             try
             {
-                isDeleted = _businessModel.RemoveUser(userId);
+                isDeleted = business.RemoveUser(userId);
 
                 if (!isDeleted)
                 {
@@ -250,62 +111,20 @@ namespace GachaController
             }
         }
 
-       
         /// <summary>
         /// Returns User object by Id
-        /// https://localhost:44307/api/P2/Balance/2
         /// </summary>
         /// <param name="userId">user id to get object for</param>
         /// <returns>User object</returns>
         [HttpGet("Balance/{userId}")]
         public int Balance(int userId)
         {
-            User currentUser = _businessModel.GetUserById(userId);
+            User currentUser = business.GetUserById(userId);
             return currentUser.CoinBalance;
         }
 
         /// <summary>
-        /// https://localhost:44307/api/P2/newPost/150/true/3/description
-        /// Creates a new Post
-        /// </summary>
-        /// <param name="userId">id of desired users collection</param>
-        /// <returns>A status code back to the user</returns>
-        [HttpGet("Post/{pokemonId}/{postPrice}/{isShiny}/{userId}/{descr}")]
-        public bool newPost(int pokemonId, int postPrice, bool isShiny, int userId, string descr)
-        {
-            User currentUser = _businessModel.GetUserById(userId);
-            Post post = new() //creates new post object from info
-            {
-                PokemonId = pokemonId == 0 ? null : pokemonId, //if id is 0, set it to null
-                PostDescription = descr,
-                Price = postPrice == 0 ? null : postPrice, //if price is 0, set it to null
-                StillAvailable = true,
-                IsShiny = isShiny
-            };
-
-            if (currentUser != null)
-            {
-                bool isCreated = _businessModel.newPost(post, currentUser);
-                return isCreated;
-            }
-            return false;
-        }
-
-        ///<summary> 
-        /// returns list of rarity type objects from Db
-        /// https://localhost:44307/api/P2/RarityTypes
-        /// </summary>
-        /// <returns>List of rarity type objects</returns>
-        [HttpGet("RarityTypes")]
-        public List<RarityType> RarityTypes()
-        {
-            return _businessModel.GetRarityTypes();
-        }
-
-
-        /// <summary>
         /// adds a specified number of coins to the users account
-        /// https://localhost:44307/api/P2/EarnCoins/2/100
         /// </summary>
         /// <param name="userId">user to add coins to</param>
         /// <param name="coinsAmount">amount of coins to add</param>
@@ -313,37 +132,86 @@ namespace GachaController
         [HttpGet("EarnCoins/{userId}/{coinsAmount}")]
         public int EarnCoins(int userId, int coinsAmount)
         {
-            User currentUser = _businessModel.GetUserById(userId);
-            _businessModel.incrementUserBalance(currentUser, coinsAmount);
+            User currentUser = business.GetUserById(userId);
+            business.incrementUserBalance(currentUser, coinsAmount);
             return currentUser.CoinBalance;
         }
 
         /// <summary>
-        /// Removes a post from displayboard
-        /// https://localhost:44307/api/P2/RemovePost/54
+        /// Gets friends list of a specific user
         /// </summary>
-        /// <param name="postID">PostID</param>
-        /// <returns>if successful removal</returns>
-        [HttpGet("RemovePost/{idpost}")]
-        public bool RemovePost(int idpost)
+        /// <param name="UserId">Current User ID</param>
+        /// <returns>List of friends</returns>
+        [HttpGet("Friends/{UserId}")]
+        public List<FullFriend> Friends(int UserId)
         {
-            bool result = _businessModel.hidePost(idpost);
+            List<FullFriend> result = business.GetFriends(UserId);
             return result;
         }
 
         /// <summary>
-        /// edits price of post
-        /// https://localhost:44307/api/P2/EditPrice/54/100
+        /// Does various actions based on friendship status between two users
         /// </summary>
-        /// <param name="postID">PostID</param>
-        /// <param name="newPrice">new price</param>
-        /// <returns>if successful edits</returns>
-        [HttpGet("EditPrice/{idpost}/{newPrice}")]
-        public bool EditPrice(int idpost, int newPrice)
+        /// <param name="UserId">Current User Id</param>
+        /// <param name="FriendId">Intended friend id</param>
+        /// <returns>Outputs a string with information on friendship status and if anything has changed</returns>
+        [HttpGet("FriendAction/{UserId}/{FriendId}")]
+        public string FriendAction(int UserId, int FriendId)
         {
-            bool result = _businessModel.editPrice(idpost, newPrice);
+            string result = business.friendAction(UserId, FriendId);
             return result;
         }
+
+        /// <summary>
+        /// Gets a specific user by Id
+        /// </summary>
+        /// <param name="userId">The ID of the user</param>
+        /// <returns>A MessageUser object representing the desired user that contains necessary messaging information</returns>
+        [HttpGet("[action]/{userId}")]
+        public MessageUser GetMessageUser(int userId)
+        {
+            return business.GetMessageUserById(userId);
+        }
+
+        /// <summary>
+        /// Gets a specific user by username
+        /// </summary>
+        /// <param name="username">The username of the user</param>
+        /// <returns>A MessageUser object representing the desired user that contains necessary messaging information</returns>
+        [HttpGet("[action]/{username}")]
+        public MessageUser GetMessageUserByUsername(string username)
+        {
+            return business.GetMessageUserByUsername(username);
+        }
+
+        [HttpGet("[action]/{senderId}/{receiverId}")]
+        public IEnumerable<Message> GetMessages(int senderId, int receiverId)
+        {
+            return business.GetMessagesBetween(senderId, receiverId);
+        }
+
+        [HttpDelete("[action]/{user1Id}/{user2Id}")]
+        public bool DeleteMessagesBetween(int user1Id, int user2Id)
+        {
+            return business.DeleteMessagesBetween(user1Id, user2Id);
+        }
+
+        [HttpPost("[action]")]
+        public void PostMessage([FromBody] Message newMessage)
+        {
+            if (ModelState.IsValid)
+            {
+                business.PostMessage(newMessage);
+            }
+        }
+        [HttpGet("[action]/{userId}")]
+        public IEnumerable<User> GetOngoingMessages(int userId)
+        {
+            return business.GetOngoingConversationUsers(userId);
+        }
+        #endregion
+
+        #region Social Board methods
 
         /// <summary>
         /// Adds a new PostComment object to the database
@@ -355,33 +223,128 @@ namespace GachaController
         [HttpGet("PostComment/{userId}/{postId}/{content}")]
         public bool PostComment(int userId, int postId, string content)
         {
-            bool isCreated = _businessModel.newPostComment(userId, postId, content);
+            bool isCreated = business.newPostComment(userId, postId, content);
             return isCreated;
         }
 
+        /// <summary>
+        /// Return the json object for each post in the database to build the display board
+        /// </summary>
+        /// <returns>List of Posts</returns>
+        [HttpGet("DisplayBoard")]
+        public List<FullPost> PostList()
+        {
+            List<FullPost> result = new List<FullPost>();
+            List<Post> playerList = business.getDisplayBoard();
+            foreach (Post post in playerList)
+            {
+                DisplayBoard displayBoard = business.getPostInfo(post.PostId);
+                string mainSprite = "https://wiki.p-insurgence.com/images/0/09/722.png"; //if a discussion post, use default image
+                string cardName = "";
+                int cardRare = 0;
+                if (post.PokemonId != null) //checks if it is sale or display post
+                {
+                    if (post.IsShiny == true) //checks with image to use
+                    {
+                        mainSprite = business.getPokemonById((int)post.PokemonId).SpriteLinkShiny;
+                    }
+                    else
+                    {
+                        mainSprite = business.getPokemonById((int)post.PokemonId).SpriteLink;
+                    }
+                    cardName = business.getPokemonById((int)post.PokemonId).PokemonName;
+                    cardRare = business.getPokemonById((int)post.PokemonId).RarityId;
+                }
 
-        //[HttpPost("PostComment/{newComment}")]
-        //public bool PostComment(string newComment)
-        //{
-        //    bool isCreated = true;// _businessModel.newPostComment(userId, postId, content);
-        //    return isCreated;
-        //}
+                FullPost instance = new FullPost()//creates full post object to be displayed
+                {
+                    PostId = post.PostId,
+                    PokemonId = post.PokemonId,
+                    PostTime = post.PostTime,
+                    PostDescription = post.PostDescription,
+                    Price = post.Price,
+                    StillAvailable = post.StillAvailable,
+                    IsShiny = post.IsShiny,
+                    UserId = displayBoard.UserId,
+                    PostType = displayBoard.PostType,
+                    PokemonName = cardName,
+                    RarityId = cardRare,
+                    UserName = business.GetUserById(displayBoard.UserId).UserName,
+                    SpriteLink = mainSprite
+
+                };
+                result.Add(instance);
+            }
+            result.Reverse();
+            return result;
+        }
+
+
+        /// <summary>
+        /// Creates a new Post
+        /// </summary>
+        /// <param name="userId">id of desired users collection</param>
+        /// <returns>A status code back to the user</returns>
+        [HttpGet("Post/{pokemonId}/{postPrice}/{isShiny}/{userId}/{descr}")]
+        public bool newPost(int pokemonId, int postPrice, bool isShiny, int userId, string descr)
+        {
+            User currentUser = business.GetUserById(userId);
+            Post post = new() //creates new post object from info
+            {
+                PokemonId = pokemonId == 0 ? null : pokemonId, //if id is 0, set it to null
+                PostDescription = descr,
+                Price = postPrice == 0 ? null : postPrice, //if price is 0, set it to null
+                StillAvailable = true,
+                IsShiny = isShiny
+            };
+
+            if (currentUser != null)
+            {
+                bool isCreated = business.newPost(post, currentUser);
+                return isCreated;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Removes a post from displayboard
+        /// </summary>
+        /// <param name="postID">PostID</param>
+        /// <returns>if successful removal</returns>
+        [HttpGet("RemovePost/{idpost}")]
+        public bool RemovePost(int idpost)
+        {
+            bool result = business.hidePost(idpost);
+            return result;
+        }
+
+        /// <summary>
+        /// edits price of post
+        /// </summary>
+        /// <param name="postID">PostID</param>
+        /// <param name="newPrice">new price</param>
+        /// <returns>if successful edits</returns>
+        [HttpGet("EditPrice/{idpost}/{newPrice}")]
+        public bool EditPrice(int idpost, int newPrice)
+        {
+            bool result = business.editPrice(idpost, newPrice);
+            return result;
+        }
 
         [HttpGet("Comments/{postId}")]
         public string Comments(int postId)
         {
-            Dictionary<PostComment, string> commentDict = _businessModel.getCommentList(postId);
-            string json = JsonConvert.SerializeObject(commentDict.ToList());
+            Dictionary<PostComment, string> commentDict = business.getCommentList(postId);
+            string json = JsonSerializer.Serialize(commentDict.ToList());
             return json;
         }
-
 
 
         [HttpGet("FullPostById/{postId}")]
         public FullPost FullPost(int postId)
         {
-            Post currentPost = _businessModel.getPostById(postId);
-            DisplayBoard curretntDisplayBoard = _businessModel.getPostInfo(postId);
+            Post currentPost = business.getPostById(postId);
+            DisplayBoard curretntDisplayBoard = business.getPostInfo(postId);
 
 
             string mainSprite = "https://wiki.p-insurgence.com/images/0/09/722.png";
@@ -392,23 +355,23 @@ namespace GachaController
             {
                 if (currentPost.IsShiny == true && currentPost.PokemonId != null)
                 {
-                    mainSprite = _businessModel.getPokemonById((int)currentPost.PokemonId).SpriteLinkShiny;
+                    mainSprite = business.getPokemonById((int)currentPost.PokemonId).SpriteLinkShiny;
                 }
                 else if (currentPost.PokemonId != null)
                 {
-                    mainSprite = _businessModel.getPokemonById((int)currentPost.PokemonId).SpriteLink;
+                    mainSprite = business.getPokemonById((int)currentPost.PokemonId).SpriteLink;
                 }
-                if(currentPost.PokemonId != null)
+                if (currentPost.PokemonId != null)
                 {
-                    cardName = _businessModel.getPokemonById((int)currentPost.PokemonId).PokemonName;
-                    cardRare = _businessModel.getPokemonById((int)currentPost.PokemonId).RarityId;
+                    cardName = business.getPokemonById((int)currentPost.PokemonId).PokemonName;
+                    cardRare = business.getPokemonById((int)currentPost.PokemonId).RarityId;
                 }
                 else
                 {
                     cardName = "";
                     cardRare = 0;
                 }
-                
+
             }
 
             FullPost currentFullPost = new FullPost()
@@ -424,16 +387,90 @@ namespace GachaController
                 PostType = curretntDisplayBoard.PostType,
                 PokemonName = cardName,
                 RarityId = cardRare,
-                UserName = _businessModel.GetUserById(curretntDisplayBoard.UserId).UserName,
+                UserName = business.GetUserById(curretntDisplayBoard.UserId).UserName,
                 SpriteLink = mainSprite
 
             };
             return currentFullPost;
         }
+        #endregion
+
+        #region Gacha methods
+
+        /// <summary>
+        /// https://localhost:44307/api/P2/buyCard/3/2
+        /// Returns the result from buying a card
+        /// </summary>
+        /// <param name="postId">Post ID of a sale</param>
+        /// <param name="userId">Current User</param>
+        /// <returns>Dictionary conation output and outcome</returns>
+        [HttpGet("buyCard/{postId}/{userId}")]
+        public string buyCard(int postId, int userId)
+        {
+
+            Post post = business.getPostById(postId);
+            User currentUser = business.GetUserById(userId);
+            Dictionary<string, bool> result = business.buyFromPost(post, currentUser);
+            string json = JsonSerializer.Serialize(result.ToList());
+            return json;
+        }
+
+        /// <summary>
+        /// Gets a random pokemon and adds it the the users collection with the id passed in
+        /// </summary>
+        /// <param name="userId">user id for user rolling lootbox</param>
+        /// <param name="boxType">type of box to roll</param>
+        /// <returns>Serialized string of dict containing PokemonCard object of the random choice and shiny boolean</returns>
+        [HttpGet("Lootbox/{userId}/{boxType}")]
+        //public Dictionary<PokemonCard, bool> Lootbox(int userId)
+        public string Lootbox(int userId, int boxType)
+        {
+            User currentUser = business.GetUserById(userId);
+            Dictionary<PokemonCard, bool> newCard;
+
+            //check boxtype for each case
+            if (boxType == 1)
+            {
+                const int lootBoxCost = 100;
+                business.incrementUserBalance(currentUser, -lootBoxCost);
+                newCard = business.rollLootbox(currentUser, 1);
+            }
+            else if (boxType == 2)
+            {
+                const int lootBoxCost = 500;
+                business.incrementUserBalance(currentUser, -lootBoxCost);
+                newCard = business.rollLootbox(currentUser, 2);
+            }
+            else
+            {
+                const int lootBoxCost = 1000;
+                business.incrementUserBalance(currentUser, -lootBoxCost);
+                newCard = business.rollLootbox(currentUser, 3);
+            }
+
+            string json = JsonSerializer.Serialize(newCard.ToList());
+            return json;
+        }
 
 
+        /// <summary>
+        /// Gets all the pokemon objects and their quanity in relation to the input userId
+        /// </summary>
+        /// <param name="userId">id of desired users collection</param>
+        /// <returns>Serialized string of dict containing PokemonCard object and its relation to the users collection for quanities</returns>
+        [HttpGet("UserCollection/{userId}")]
+        public string UserCollection(int userId)
+        {
+            User currentUser = business.GetUserById(userId);
+            Dictionary<CardCollection, PokemonCard> userCollection = business.getUserCollection(currentUser);
+            string json = JsonSerializer.Serialize(userCollection.ToList());
+            return json;
+        }
+
+        #endregion
+
+        #region Collection methods
         /// Changes favorite status of a card in your collection
-        /// https://localhost:44307/api/P2/Favorite/3/151
         /// </summary>
         /// <param name="UserId">Current User ID</param>
         /// <param name="Poke">Pokemon card id</param>
@@ -441,86 +478,68 @@ namespace GachaController
         [HttpGet("Favorite/{UserId}/{Poke}")]
         public bool Favorite(int UserId, int Poke)
         {
-            bool result = _businessModel.favoriteCard(UserId, Poke);
+            bool result = business.favoriteCard(UserId, Poke);
             return result;
         }
 
         /// <summary>
-        /// Gets friends list of a specific user
-        /// https://localhost:44307/api/P2/Friends/2
+        /// Returns the json object for a selected Pokemon
         /// </summary>
-        /// <param name="UserId">Current User ID</param>
-        /// <returns>List of friends</returns>
-        [HttpGet("Friends/{UserId}")]
-        public List<FullFriend> Friends(int UserId)
+        /// <param name="id">id to select by</param>
+        /// <returns>Pokemon card</returns>
+        [HttpGet("Pokemon/{id}")]
+        public PokemonCard Pokemon(int id)
         {
-            List<FullFriend> result = _businessModel.GetFriends(UserId);
-            return result;
+            PokemonCard selectedCard = business.getPokemonById(id);
+            return selectedCard;
         }
+        #endregion
 
 
-        /// <summary>
-        /// Does various actions based on friendship status between two users
-        /// https://localhost:44307/api/P2/FriendAction/2/1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
+
+        //Make an enum:
+        ///<summary> 
+        /// returns list of rarity type objects from Db
         /// </summary>
-        /// <param name="UserId">Current User Id</param>
-        /// <param name="FriendId">Intended friend id</param>
-        /// <returns>Outputs a string with information on friendship status and if anything has changed</returns>
-        [HttpGet("FriendAction/{UserId}/{FriendId}")]
-        public string FriendAction(int UserId, int FriendId)
+        /// <returns>List of rarity type objects</returns>
+        [HttpGet("RarityTypes")]
+        public List<RarityType> RarityTypes()
         {
-            string result = _businessModel.friendAction(UserId, FriendId);
-            return result;
+            return business.GetRarityTypes();
         }
 
-        /// <summary>
-        /// Gets a specific user by Id
-        /// </summary>
-        /// <param name="userId">The ID of the user</param>
-        /// <returns>A MessageUser object representing the desired user that contains necessary messaging information</returns>
-        [HttpGet("[action]/{userId}")]
-        public MessageUser GetMessageUser(int userId)
-        {
-            return _businessModel.GetMessageUserById(userId);
-        }
 
-        /// <summary>
-        /// Gets a specific user by username
-        /// </summary>
-        /// <param name="username">The username of the user</param>
-        /// <returns>A MessageUser object representing the desired user that contains necessary messaging information</returns>
-        [HttpGet("[action]/{username}")]
-        public MessageUser GetMessageUserByUsername(string username)
-        {
-            return _businessModel.GetMessageUserByUsername(username);
-        }
 
-        [HttpGet("[action]/{senderId}/{receiverId}")]
-        public IEnumerable<Message> GetMessages(int senderId, int receiverId)
-        {
-            return _businessModel.GetMessagesBetween(senderId, receiverId);
-        }
 
-        [HttpDelete("[action]/{user1Id}/{user2Id}")]
-        public bool DeleteMessagesBetween(int user1Id, int user2Id)
-        {
-            return _businessModel.DeleteMessagesBetween(user1Id, user2Id);
-        }
 
-        [HttpPost("[action]")]
-        public void PostMessage([FromBody] Message newMessage)
-        {
-            if (ModelState.IsValid)
-            {
-                _businessModel.PostMessage(newMessage);
-            }
-        }
 
-        [HttpGet("[action]/{userId}")]
-        public IEnumerable<User> GetOngoingMessages(int userId)
-        {
-            return _businessModel.GetOngoingConversationUsers(userId);
-        }
-    } // end class
-} // end namespace
+
+
+
+        //[HttpPost("PostComment/{newComment}")]
+        //public bool PostComment(string newComment)
+        //{
+        //    bool isCreated = true;// _businessModel.newPostComment(userId, postId, content);
+        //    return isCreated;
+        //}
+    }
+}
 

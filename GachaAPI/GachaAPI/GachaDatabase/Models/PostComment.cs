@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace P2DbContext.Models
+namespace GachaDatabase.Models
 {
     public partial class PostComment
     {
@@ -12,7 +12,6 @@ namespace P2DbContext.Models
         public int CommentUserId { get; set; }
         public string CommentContent { get; set; }
         public DateTime CommentTimestamp { get; set; }
-
         public virtual Post CommentPost { get; set; }
         public virtual User CommentUser { get; set; }
     }

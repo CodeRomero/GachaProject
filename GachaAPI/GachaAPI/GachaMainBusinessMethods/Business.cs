@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using P2DbContext.Models;
+using GachaDatabase;
+using GachaDatabase.Models;
 using System.Linq;
 
 namespace GachaMainBusinessMethods
 {
     public class Business : IBusiness
     {
-        public GachaDb context;
+        private readonly GachaDb context;
 
         /// <summary>
         /// Constructor for business class that takes a Db context
@@ -33,13 +34,13 @@ namespace GachaMainBusinessMethods
         /// <param name="currentUser">Current user who is recieving a lootbox</param>
         /// <param name="boxType">Ctype of box to be rolled</param>
         /// <returns>Dictionary object where key is the generated card and the value is a boolean stating whether or not the card is shiny</returns>
-        public Dictionary<PokemonCard, bool> rollLootbox(P2DbContext.Models.User currentUser, int boxType)
+        public Dictionary<PokemonCard, bool> rollLootbox(User currentUser, int boxType)
         {
             Random random = new Random();
             bool isShiny = false;
             Dictionary<PokemonCard, bool> result = new Dictionary<PokemonCard, bool>();
 
-            P2DbContext.Models.PokemonCard card;
+            PokemonCard card;
             int rareId; //generate random rarity based on preset distribution
             int rand = random.Next(101);
             if (boxType != 2) //if boxtype is not 2, we use normal odds for generating pokemon

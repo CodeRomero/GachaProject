@@ -1,10 +1,10 @@
-﻿using Newtonsoft.JSON;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 #nullable disable
 
-namespace P2DbContext.Models
+namespace GachaDatabase.Models
 {
     public partial class CardCollection
     {
